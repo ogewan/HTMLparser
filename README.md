@@ -1,5 +1,5 @@
 # HTMLparser
-Turns an HTML string into a analogous JS Object
+Turns an HTML string into an analogous JS Object
 ## Usage
 To get HTML as an Object
 ``` js
