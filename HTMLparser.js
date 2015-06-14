@@ -8,13 +8,14 @@ function Obj2HTML(b,e){
         c = document.createElement(b[i].$head);
         for (var key in b[i]){
             if(b[i].hasOwnProperty(key) && key[0]!='$'){
-                console.log(key,b[i][key]);
+                /*console.log(key,b[i][key]);*/
                 c.setAttribute(key, b[i][key]);
             }
         }
-        console.log(b[i]);
+        /*console.log(b[i]);*/
         if(b[i].$in.length) Obj2HTML(b[i].$in, c);
-        e.appendChild(c);
+        if(e && !(void 0 === e)) e.appendChild(c);
+        return c;
     }
 }
 function HTMLobjClean(a){
