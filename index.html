@@ -1,0 +1,10 @@
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="HTMLparser.incog.js"></script>
+<script>$( document ).ready(function() {
+    var a = "<div>\n<h1></h1>\n<p><img id isrc src title alt btog></p>\n</div>";
+    console.log(a);
+    var b = HTML2Obj(a);
+    console.log(b);
+    var c = console.log(Obj2HTML(b,document.body));
+});
+</script>
