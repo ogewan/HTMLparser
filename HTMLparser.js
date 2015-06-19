@@ -1,6 +1,8 @@
 /*! HTMLparser (c) 2015 Oluwaseun Ogedengbe, MIT seun40.github.io/comic-ng/, incognito*/
 var HTML2Obj = function(o){
+        //console.log("coproducer");
     var m = function(a){
+        //console.log("HTMLobj Clean called, with",a);
         for(i=0;i<a.length;i++){
             if(a[i].$head[0]=="/"){
                 /*console.log(a.splice(i,1));*/
@@ -9,19 +11,33 @@ var HTML2Obj = function(o){
             if(i>=a.length) break;
         }
         for(i=0;i<a.length;i++){
-            m(a[i].$in);
+            if(a[i].$in.length) m(a[i].$in);
+            //console.log(a.length);
+            
         }
         return a;
     };
     var n = function(a){
+        //console.log("HTMLobj Parse called, with");
         if(void 0===a){
             console.error("HTMLparser needs something to parse");
             return -1;
         } else if(typeof a==='string'){/*if a is string turn it into a cleaned array of tags*/
-            a = a.replace(/[\n<]/g, '').split(">");
+            a = a.replace(/[\n\r\t<]/g, '').split(">");
+            var w = 0;
+            for (u = 0; u < a.length; u++) {
+                w = 0;
+                for (v = 0; v < a[u].length; v++) {
+                    //console.log("'",a[u][v],"'");
+                    if(a[u][v]!=' ') break;
+                    w++;
+                }
+                a[u] = a[u].substring(w,a[u].length);
+                //console.log(a[u]);
+            }
             a.pop();
         }
-        /*console.log(a);*/
+        //console.log(a);
         if(a.length<1) return [];
         var taglist = [];
         var tag = {};
@@ -39,7 +55,7 @@ var HTML2Obj = function(o){
             x = 0;
             u = 0;
             b = [];
-            tag = {$head:'',$tail:'',$in:[]};
+            tag = {$head:'',$tail:'',$in:[],innerHTML:""};
             for(q=0;q<a.length;q++){
                 b.push(a[q].split(" ")[0]);/*reduce to tags for searching*/
             }
@@ -73,21 +89,28 @@ var HTML2Obj = function(o){
                 var sub_iter = iter[k].split("=");
                 tag[sub_iter[0]] = (sub_iter.length>1)?sub_iter[1]:'';
             }
+            /*console.log(a);*/
             c = a.splice(0,x);
             //c.splice(c.length-1,1);
+            //console.log(c);
             c.splice(0,1);
             if(x<=1) a.splice(0,1);
+            //console.log(c);
             tag.$in = n(c);
             taglist.push(tag);
+            //console.log(a);
 
-            if(x<0) break;
+            //if(x<0) break;
         }    
         return taglist;
     };
     return m(n(o));
-}
+};
 var Obj2HTML = function(b,e){
     var a = function(b,e){
+        if(void 0===b){
+            return -1;
+        }
         var c;
         for (i = 0; i < b.length; i++) { 
             c = document.createElement(b[i].$head);
@@ -96,8 +119,8 @@ var Obj2HTML = function(b,e){
                     c.setAttribute(key, b[i][key]);
                 }
             }
-            console.log(a);
-            console.log(b[i].$head);
+            //console.log(a);
+            //console.log(b[i].$head);
             if(b[i].$in.length) a(b[i].$in, c);
             if(e && !(void 0 === e)) e.appendChild(c);
         }
