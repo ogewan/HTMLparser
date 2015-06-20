@@ -23,7 +23,7 @@ var HTML2Obj = function(o){
             console.error("HTMLparser needs something to parse");
             return -1;
         } else if(typeof a==='string'){/*if a is string turn it into a cleaned array of tags*/
-            a = a.replace(/[\n\r\t<]/g, '').split(">");
+            a = a.replace(/[\n\r\t>]/g, '').split("<");
             var w = 0;
             for (u = 0; u < a.length; u++) {
                 w = 0;
@@ -35,7 +35,8 @@ var HTML2Obj = function(o){
                 a[u] = a[u].substring(w,a[u].length);
                 //console.log(a[u]);
             }
-            a.pop();
+            //a.pop();
+            a.splice(0,1);
         }
         //console.log(a);
         if(a.length<1) return [];
@@ -87,7 +88,13 @@ var HTML2Obj = function(o){
             tag.$tail = b[x];
             for (k = 1; k < iter.length; k++) {
                 var sub_iter = iter[k].split("=");
-                tag[sub_iter[0]] = (sub_iter.length>1)?sub_iter[1]:'';
+                tag[sub_iter[0]] = (sub_iter.length>1)?sub_iter[1].split('"'):'';
+                if(tag[sub_iter[0]].length>2){
+                    for(p = 2; p <tag[sub_iter[0]].length; p++){
+                        tag.innerHTML+=tag[sub_iter[0]][p];
+                    }
+                    tag[sub_iter[0]] = tag[sub_iter[0]][1];
+                }
             }
             /*console.log(a);*/
             c = a.splice(0,x);
