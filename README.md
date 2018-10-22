@@ -1,3 +1,4 @@
+*_This project is no longer being maintained: see [JSX](https://reactjs.org/docs/introducing-jsx.html) as an alternative_
 # HTMLparser
 Turns an HTML string into an analogous JS Object
 ## Usage
